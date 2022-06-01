@@ -11,6 +11,8 @@ import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,6 +43,15 @@ private fun MyApp(names: List<String> = listOf("World", "Compose")) {
 // item 한개
 @Composable
 fun Greeting(name: String) {
+    /**
+    Compose는 Ui 안의 data가 변경되면 composable function을 호출하면서 데이터를 변경하는데
+    이를 recomposition이라고 합니다. 이때마다 변수로 선언하면 변수가 계속 false로 불림
+    이를 방지하기 위해 이전의 데이터를 유지하는 remember를 사용하면 reset 되지 않고 데이터를 유지시킬 수 있다!
+     */
+    val expanded = remember { mutableStateOf(false) }
+
+    val extraPadding = if (expanded.value) 48.dp else 0.dp
+
     Surface(
         color = MaterialTheme.colors.primary,
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
@@ -50,14 +61,19 @@ fun Greeting(name: String) {
                 /** weight를 줌으로써 공간을 채우는 동시에 다른 요소를 밀어내서, 끝으로 보냄
                  * fillMaxWidth를 안써도 됨. -> 중복됨
                  */
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
+                    /**
+                     * padding 바텀으로 주기
+                     */
+                    .padding(bottom = extraPadding)
             ) {
                 Text(text = "Hello, ")
                 Text(text = name)
             }
 
-            OutlinedButton(onClick = { }) {
-                Text("Show more")
+            OutlinedButton(onClick = { expanded.value = !expanded.value }) {
+                Text(if (expanded.value) "Show less" else "Show more")
             }
         }
 
