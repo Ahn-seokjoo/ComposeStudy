@@ -21,9 +21,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.codelab.basiclayouts.ui.theme.MySootheTheme
@@ -36,11 +42,35 @@ class MainActivity : ComponentActivity() {
 }
 
 // Step: Search bar - Modifiers
+/**
+ * leading icon을 통해 TextField에 기본 이미지 세팅 가능
+ * 함수 밖에서 Modifier를 받아서 각각 custom이 가능하게, reuseable하게 만들지만,
+ * 내부에서는 반드시 적용해야하는, 가로는 꽉채우고 최소 56dp를 만족해야하게끔 구성성 */
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier
 ) {
     // Implement composable here
+    TextField(
+        value = "",
+        onValueChange = {},
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(min = 56.dp),
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = null
+            )
+        },
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = MaterialTheme.colors.surface
+        ),
+        placeholder = {
+            Text(stringResource(id = R.string.placeholder_search))
+        }
+
+    )
 }
 
 // Step: Align your body - Alignment
