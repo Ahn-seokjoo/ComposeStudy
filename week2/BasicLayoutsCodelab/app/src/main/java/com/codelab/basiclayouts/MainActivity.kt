@@ -262,9 +262,20 @@ private fun SootheBottomNavigation(modifier: Modifier = Modifier) {
 }
 
 // Step: MySoothe App - Scaffold
+/**
+ * 최 상단의 레이아웃? 느낌같다!
+ * 바텀 네비게이션 뷰와 결합해서 전체 화면을 구현함
+ */
 @Composable
 fun MySootheApp() {
     // Implement composable here
+    MySootheTheme {
+        Scaffold(
+            bottomBar = { SootheBottomNavigation() }
+        ) { paddingValues ->
+            HomeScreen(Modifier.padding(paddingValues))
+        }
+    }
 }
 
 private val alignYourBodyData = listOf(
