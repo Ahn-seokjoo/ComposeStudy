@@ -42,6 +42,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.codelab.basiclayouts.ui.theme.MySootheTheme
+import java.util.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -149,6 +150,10 @@ fun FavoriteCollectionCard(
 }
 
 // Step: Align your body row - Arrangements
+/**
+ * slot api를 이용해 사용자 custom이 가능하고, 후행 람다를 이용해서 자신만의 컴포저블 함수를 사용가능
+ * 예를 들어 버튼에 @Composable () -> Unit 을 통해 자신만의 Composable을 버튼에 삽입이 가능하다
+ */
 @Composable
 fun AlignYourBodyRow(
     modifier: Modifier = Modifier
@@ -187,9 +192,21 @@ fun FavoriteCollectionsGrid(
 // Step: Home section - Slot APIs
 @Composable
 fun HomeSection(
-    modifier: Modifier = Modifier
+    @StringRes title: Int,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
 ) {
     // Implement composable here
+    Column(modifier) {
+        Text(
+            text = stringResource(id = title).uppercase(Locale.getDefault()), style =
+            MaterialTheme.typography.h2,
+            modifier = Modifier
+                .paddingFromBaseline(top = 40.dp, bottom = 8.dp)
+                .padding(horizontal = 16.dp)
+        )
+        content()
+    }
 }
 
 // Step: Home screen - Scrolling
@@ -278,7 +295,11 @@ fun AlignYourBodyRowPreview() {
 @Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
 @Composable
 fun HomeSectionPreview() {
-    MySootheTheme { HomeSection() }
+    MySootheTheme {
+        HomeSection(R.string.align_your_body) {
+            AlignYourBodyRow()
+        }
+    }
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
